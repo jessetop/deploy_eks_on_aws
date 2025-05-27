@@ -13,9 +13,9 @@ pipeline {
                 sh 'chmod +x ./kubectl'                                   
                 sh 'mkdir -p ~/.local/bin'
                 sh 'mv ./kubectl ~/.local/bin/kubectl'     
-                sh 'export PATH=$PATH:~/.local/bin'
+                sh 'export PATH=~/.local/bin:$PATH'
                 sh 'echo Getting kubectl version'
-                sh 'kubectl version'                       
+                sh './kubectl version'                       
             }
         }
         stage('Install eksctl') {
