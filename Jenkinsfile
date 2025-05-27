@@ -13,6 +13,7 @@ pipeline {
                 sh 'chmod +x ./kubectl'                                   
                 sh 'mkdir -p ~/.local/bin'
                 sh 'mv ./kubectl ~/.local/bin/kubectl'     
+                sh 'export PATH=$PATH:~/.local/bin'
                 sh 'echo Getting kubectl version'
                 sh 'kubectl version'                       
             }
