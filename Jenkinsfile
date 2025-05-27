@@ -5,18 +5,13 @@ pipeline {
         PLATFORM = 'linux_amd64'        
     }
 
-    stages {
-        stage('Cleaning Workspace') {
-            steps {
-                cleanWs()
-            }
-        }
+    stages {        
         stage('Install kubectl') {
             steps {            
                 sh 'echo Installing eksctl'
                 sh 'curl -O "https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/amd64/kubectl"'
                 sh 'chmod +x ./kubectl'                
-                sh 'mv ./kubectl /usr/local/bin/kubectl'     
+                sh 'sudo mv ./kubectl /usr/local/bin/kubectl'     
                 //sh 'mkdir -p ~/.local/bin'
                 //sh 'mv ./kubectl ~/.local/bin/kubectl'     
                 sh 'echo Getting kubectl version'
@@ -45,5 +40,11 @@ pipeline {
                 echo 'Deploying....'
             }
         }
+        //stage('Cleaning Workspace') {
+        //    steps {
+         //       cleanWs()
+          //  }
+        //}
     }
+    
 }
