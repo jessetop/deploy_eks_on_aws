@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Install eksctl') {
             steps {
-                scripts {
+                script {
                     echo 'Installing eksctl'
                     curl -O 'https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/amd64/kubectl'
                     chmod +x ./kubectl
@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Install kubectl') {
             steps {
-                scripts {
+                script {
                     echo 'Installing kubectl'                
                     sudo yum install kubectl
                 }                
