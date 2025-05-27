@@ -8,15 +8,12 @@ pipeline {
             }
         }
         stage('Install eksctl') {
-            steps {
-                script {
-                    echo 'Installing eksctl'
-                    curl -O "https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/amd64/kubectl"
-                    chmod +x ./kubectl
-                    mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
-                    echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
-                }
-                
+            steps {            
+                sh 'echo Installing eksctl'
+                sh 'curl -O "https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/amd64/kubectl"'
+                sh 'chmod +x ./kubectl'
+                sh 'mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH'
+                sh "echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc"                               
             }
         }
         stage('Install kubectl') {
