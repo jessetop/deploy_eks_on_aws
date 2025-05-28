@@ -9,42 +9,32 @@ pipeline {
     stages {        
         stage('Install kubectl') {
             steps {            
-                // need to add a check to see if the file exists before installing, or check version against latest version
-                sh 'echo --------------------------------------------'
-                sh 'echo Installing eksctl'
-                sh 'echo --------------------------------------------'
+                // need to add a check to see if the file exists before installing, or check version against latest version                
+                sh 'echo Installing eksctl'                
                 sh 'curl -O "https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/amd64/kubectl"'
                 sh 'chmod +x ./kubectl'                                   
                 sh 'mkdir -p ~/.local/bin'                
-                sh 'mv ./kubectl ~/.local/bin/kubectl'                     
-                sh 'echo --------------------------------------------'
-                sh 'echo Getting kubectl version'
-                sh 'echo --------------------------------------------'
+                sh 'mv ./kubectl ~/.local/bin/kubectl'                                     
+                sh 'echo Getting kubectl version'                
                 sh '${BIN_PATH}/kubectl version --client=true'                       
             }
         }
         stage('Install eksctl') {
             steps {
                 script {
-                    // need to add a check to see if the file exists before installing, or check version against latest version
-                    sh 'echo --------------------------------------------'
-                    sh 'echo Installing eksctl'                       
-                    sh 'echo --------------------------------------------'
+                    // need to add a check to see if the file exists before installing, or check version against latest version                    
+                    sh 'echo Installing eksctl'                                           
                     sh 'curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_${PLATFORM}.tar.gz"'                          
                     sh 'tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz'
-                    sh 'mv /tmp/eksctl ~/.local/bin/eksctl'
-                    sh 'echo --------------------------------------------'
-                    sh 'echo Getting eksctl version'
-                    sh 'echo --------------------------------------------'
+                    sh 'mv /tmp/eksctl ~/.local/bin/eksctl'                    
+                    sh 'echo Getting eksctl version'                    
                     sh '${BIN_PATH}/eksctl version'
                 }                
             }
         }        
         stage('Create EKS Cluster') {
-            steps {
-                sh 'echo --------------------------------------------'
-                sh 'echo ----- Creating EKS Cluster -----------------'
-                sh 'echo --------------------------------------------'
+            steps {                
+                sh 'echo Creating EKS Cluster'                
                 sh '${BIN_PATH}/eksctl create cluster -f cluster_config.yaml'       
                 
             }
