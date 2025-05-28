@@ -16,10 +16,10 @@ pipeline {
         stage('Run in kubernetes pod') {
             agent {
                 kubernetes {
-                }
-                steps {
-                    echo 'Hello World'
-                }
+                }                
+            }
+            steps {
+                echo 'Hello World'
             }
         }
         
