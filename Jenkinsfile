@@ -40,28 +40,30 @@ pipeline {
             }
             post {                
                 failure {
-                    try {
+                    script {
+                        try {
                         // if EKS Cluster create fails, try and delete it so we don't leave it in an inconsistent state
                         // this is hardcoded and needs to be paramterized later
                         sh 'aws cloudformation delete-stack --region-us-east-1 --stack-name eksctl-test-cluster-name-cluster'                                                                                                
-                    }
-                    catch (Exception e) {
-                        
-                            echo "Failed to delete Cloudformation Stack: " + e.getMessage()
-                            echo "Forcing deletion of Cloudformation Stack"
-                            sh 'aws cloudformation delete-stack --deletion-mode FORCE_DELETE_STACK --region-us-east-1 --stack-name eksctl-test-cluster-name-cluster'
-                    }                    
-                    finally {
+                        }
+                        catch (Exception e) {
+                            
+                                echo "Failed to delete Cloudformation Stack: " + e.getMessage()
+                                echo "Forcing deletion of Cloudformation Stack"
+                                sh 'aws cloudformation delete-stack --deletion-mode FORCE_DELETE_STACK --region-us-east-1 --stack-name eksctl-test-cluster-name-cluster'
+                        }                    
+                        finally {
 
-                        try {
-                            // check that the cluster exists first using aws eks describe-cluster
-                            // sh 'aws eks describe-cluster --name test-cluster-name --region us-east-1'
-                            // sh '${BIN_PATH}/eksctl delete cluster -f cluster_config.yaml'       
-                        }
-                        catch(Exception e) {
-                            echo "Failed to delete EKS Cluster:" + e.getMessage()
-                        }
-                    }                                                   
+                            try {
+                                // check that the cluster exists first using aws eks describe-cluster
+                                // sh 'aws eks describe-cluster --name test-cluster-name --region us-east-1'
+                                // sh '${BIN_PATH}/eksctl delete cluster -f cluster_config.yaml'       
+                            }
+                            catch(Exception e) {
+                                echo "Failed to delete EKS Cluster:" + e.getMessage()
+                            }
+                        }                                                   
+                    }                    
                 }
             }
         }        
