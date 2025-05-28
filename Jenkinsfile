@@ -52,7 +52,7 @@ pipeline {
             }
             steps {
                 echo "Creating EKS Cluster"
-                // sh '${BIN_PATH}/eksctl create cluster -f cluster_config.yaml'       
+                sh '${BIN_PATH}/eksctl create cluster -f cluster_config.yaml'       
             }        
             post {                
                 failure {
@@ -60,15 +60,7 @@ pipeline {
                         try {
                         // if EKS Cluster create fails, try and delete it so we don't leave it in an inconsistent state
                         // this is hardcoded and needs to be paramterized later
-                        
-                        // delete the add-on stacks first
-                        sh 'aws cloudformation delete-stack --region us-east-1 --stack-name eksctl-test-cluster-name-addon-iamserviceaccount-kube-system-cluster-autoscaler-jat'                                                                                                
-                        sh 'aws cloudformation delete-stack --region us-east-1 --stack-name eksctl-test-cluster-name-addon-iamserviceaccount-kube-system-aws-load-balancer-controller-jat' 
-                        
-                        sh 'aws cloudformation delete-stack --region us-east-1 --stack-name eksctl-test-cluster-name-addon-iamserviceaccount-kube-system-cluster-autoscaler-jat'                                                                                                
-                        sh 'aws cloudformation delete-stack --region us-east-1 --stack-name eksctl-test-cluster-name-addon-iamserviceaccount-kube-system-cluster-autoscaler-jat'                                                                                                
-                        
-                        
+                                                
                         sh 'aws cloudformation delete-stack --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'                                                                                                
                         sh 'aws cloudformation wait stack-delete-complete --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'
                         }
