@@ -1,6 +1,6 @@
 // add the next two lines to run the entire pipeline in a pod template
 podTemplate {
-    node('nodegroup-1') {
+    node('built-in') {
     }
 }
             
