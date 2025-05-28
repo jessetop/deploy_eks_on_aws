@@ -56,9 +56,11 @@ pipeline {
                             // sh 'aws eks describe-cluster --name test-cluster-name --region us-east-1'
                             // sh '${BIN_PATH}/eksctl delete cluster -f cluster_config.yaml'       
                         }
+                        catch {
+                            echo "Failed to delete EKS Cluster"
+                        }
                     }
-                    
-                    
+                                
                 }
             }
         }        
