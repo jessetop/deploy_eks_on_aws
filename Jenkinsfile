@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         PLATFORM = 'linux_amd64'        
+        BIN_PATH = '/var/lib/jenkins/.local/bin/'
     }
 
     stages {        
@@ -11,12 +12,10 @@ pipeline {
                 sh 'echo Installing eksctl'
                 sh 'curl -O "https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/amd64/kubectl"'
                 sh 'chmod +x ./kubectl'                                   
-                sh 'mkdir -p ~/.local/bin'
-                sh 'pwd'
-                sh 'mv ./kubectl ~/.local/bin/kubectl'     
-                sh 'export PATH=~/.local/bin:$PATH'
+                sh 'mkdir -p ~/.local/bin'                
+                sh 'mv ./kubectl ~/.local/bin/kubectl'                     
                 sh 'echo Getting kubectl version'
-                sh './kubectl version'                       
+                sh '${BIN_PATH}/kubectl version'                       
             }
         }
         stage('Install eksctl') {
