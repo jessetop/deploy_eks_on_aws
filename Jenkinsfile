@@ -1,4 +1,4 @@
-// add the next two lines to run the entire pipeline in a pod template
+// add the next two lines to configure the podtemplate
 podTemplate {
     node('built-in') {
     }
@@ -13,6 +13,15 @@ pipeline {
     }
 
     stages {        
+        stage('Run in kubernetes pod') {
+            agent {
+                kubernetes {
+                }
+                steps {
+                    echo 'Hello World'
+                }
+            }
+        }
         
         /*
         stage('Agent Docker example') {
