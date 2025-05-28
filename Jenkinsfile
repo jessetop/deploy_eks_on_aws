@@ -14,6 +14,7 @@ pipeline {
 
     stages {        
         
+        /*
         stage('Agent Docker example') {
             agent {
                 docker {
@@ -36,7 +37,8 @@ pipeline {
                 // these steps will be run inside the docker container defined in the Dockerfile.build_cart
                 sh 'npm install'
             }
-        }    
+        } 
+        */   
         stage('Install kubectl') {
             steps {            
                 // need to add a check to see if the file exists before installing, or check version against latest version                
