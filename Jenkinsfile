@@ -7,9 +7,28 @@ pipeline {
     }
 
     stages {        
+        
+        stage('Agent Docker example') {
+            agent {
+                docker {
+                    image 'node:22.16.0-alpine3.21'
+                }
+            }
+            steps {
+                sh 'node --eval "console.log(process.platform,process.env.CI)"'
+            }
+        } 
+        /*
+        stage('Agent Dockerfile example') {
+            agent { dockerfile true }
+            steps {
+
+            }
+        }*/
         stage('Install kubectl') {
             steps {            
                 // need to add a check to see if the file exists before installing, or check version against latest version                
+                // need to change this to use jenkins agents (containers) instead of the master node
                 echo "Installing eksctl"
                 sh 'curl -O "https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/amd64/kubectl"'
                 sh 'chmod +x ./kubectl'                                   
@@ -22,7 +41,8 @@ pipeline {
         stage('Install eksctl') {
             steps {
                 script {
-                    // need to add a check to see if the file exists before installing, or check version against latest version                    
+                    // need to add a check to see if the file exists before installing, or check version against latest version
+                    // need to change this to use jenkins agents (containers) instead of the master node                    
                     echo "Installing eksctl"
                     sh 'curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_${PLATFORM}.tar.gz"'                          
                     sh 'tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz'
@@ -77,7 +97,6 @@ pipeline {
                                 // -w flag waits for entire cluster to be deleted before returning a response
                                 sh '${BIN_PATH}/eksctl delete cluster -f cluster_config.yaml -w'       
 
-
                             }
                             catch(Exception e) {
                                 echo "Failed to delete EKS Cluster:" + e.getMessage()
@@ -93,6 +112,9 @@ pipeline {
                 sh 'aws eks update-kubeconfig --region us-east-1 --name test-cluster-name'
                 sh '${BIN_PATH}/kubectl cluster-info'
             }
+        }
+        stage('Deploy Application') {
+
         }
         //stage('Cleaning Workspace') {
         //    steps {
