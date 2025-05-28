@@ -31,17 +31,17 @@ pipeline {
                 sh 'npm install'
             }
         }
-        stage('Run commands inside pod running on EKS') {
-            // Configure the kubernetes plugin to connect to your existing EKS cluster
-            // https://plugins.jenkins.io/kubernetes/
-            podTemplate {
-                node('TEST_LABEL') {
-                    stage('Run shell') {
-                        sh 'echo hello world'
-                    }
+        
+        podTemplate {
+            node('POD_LABEL') {
+                stage('Run commands inside pod running on EKS') {
+                    // Configure the kubernetes plugin to connect to your existing EKS cluster
+                    // https://plugins.jenkins.io/kubernetes/
+        
+                    sh 'echo hello world'
                 }
             }
-        }
+        }        
         stage('Install kubectl') {
             steps {            
                 // need to add a check to see if the file exists before installing, or check version against latest version                
