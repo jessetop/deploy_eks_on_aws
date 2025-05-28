@@ -19,7 +19,6 @@ pipeline {
                 //sh 'node --eval "console.log(process.platform,process.env.CI)"'
             }
         } 
-        
         stage('Test Cart Docker Image') {
             agent { 
                 dockerfile {
@@ -32,11 +31,11 @@ pipeline {
                 sh 'npm install'
             }
         }
-        stage{'Run commands inside pod running on EKS'} {
+        stage('Run commands inside pod running on EKS') {
             // Configure the kubernetes plugin to connect to your existing EKS cluster
             // https://plugins.jenkins.io/kubernetes/
             podTemplate {
-                node(POD_LABEL) {
+                node('TEST_LABEL') {
                     stage('Run shell') {
                         sh 'echo hello world'
                     }
