@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         PLATFORM = 'linux_amd64'        
-        BIN_PATH = '/var/lib/jenkins/.local/bin/'
+        BIN_PATH = '/var/lib/jenkins/.local/bin'
     }
 
     stages {        
@@ -26,7 +26,7 @@ pipeline {
                     sh 'tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz'
                     sh 'mv /tmp/eksctl ~/.local/bin/eksctl'
                     sh 'echo Getting eksctl version'
-                    sh 'eksctl version'
+                    sh '${BIN_PATH}/eksctl version'
                 }                
             }
         }        
