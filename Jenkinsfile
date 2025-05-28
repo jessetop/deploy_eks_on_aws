@@ -9,10 +9,8 @@ pipeline {
     stages {        
         
         stage('Agent Docker example') {
-            agent {
-                docker {
-                    image 'node:22.16.0-alpine3.21'
-                }
+            agent docker {                
+                image 'node:22.16.0-alpine3.21'                
             }
             steps {
                 sh 'node --eval "console.log(process.platform,process.env.CI)"'
