@@ -18,13 +18,15 @@ pipeline {
                 sh 'node --eval "console.log(process.platform,process.env.CI)"'
             }
         } 
-        /*
-        stage('Agent Dockerfile example') {
-            agent { dockerfile true }
-            steps {
-
+        
+        stage('Test Cart Docker Image') {
+            agent { 
+                dockerfile {
+                    filename Dockerfile.build_cart
+                    dir 'pipeline/build_docker'
+                }
             }
-        }*/
+        }
         stage('Install kubectl') {
             steps {            
                 // need to add a check to see if the file exists before installing, or check version against latest version                
