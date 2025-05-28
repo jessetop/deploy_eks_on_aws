@@ -45,8 +45,8 @@ pipeline {
                         // this is hardcoded and needs to be paramterized later
                         sh 'aws cloudformation delete-stack --region-us-east-1 --stack-name eksctl-test-cluster-name-cluster'                    
                     }
-                    catch () {
-                        echo "Failed to delete Cloudformation Stack"
+                    catch (Exception e) {
+                        echo "Failed to delete Cloudformation Stack: " + e.getMessage()
                         echo "Forcing deletion of Cloudformation Stack"
                         sh 'aws cloudformation delete-stack --deletion-mode FORCE_DELETE_STACK --region-us-east-1 --stack-name eksctl-test-cluster-name-cluster'                    
                     }
@@ -57,8 +57,8 @@ pipeline {
                             // sh 'aws eks describe-cluster --name test-cluster-name --region us-east-1'
                             // sh '${BIN_PATH}/eksctl delete cluster -f cluster_config.yaml'       
                         }
-                        catch() {
-                            echo "Failed to delete EKS Cluster"
+                        catch(Exception e) {
+                            echo "Failed to delete EKS Cluster:" + e.getMessage()
                         }
                     }
                                 
