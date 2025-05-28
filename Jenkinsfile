@@ -15,7 +15,7 @@ pipeline {
                 sh 'mkdir -p ~/.local/bin'                
                 sh 'mv ./kubectl ~/.local/bin/kubectl'                     
                 sh 'echo Getting kubectl version'
-                sh '${BIN_PATH}/kubectl version'                       
+                sh '${BIN_PATH}/kubectl version --client=true'                       
             }
         }
         stage('Install eksctl') {
