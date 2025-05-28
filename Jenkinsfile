@@ -37,7 +37,7 @@ pipeline {
                 expression {
                     // check if the cluster exists, if it does, skip this stage
                     try {
-                        sh 'aws eks describe-cluster --name test-1cluster-name --region us-east-1'
+                        sh 'aws eks describe-cluster --name test-cluster-name --region us-east-1'
                         catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                             // if the cluster exists, this will not throw an error
                             echo "EKS Cluster already exists, skipping creation"
