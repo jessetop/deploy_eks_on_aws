@@ -11,10 +11,11 @@ pipeline {
         stage('Agent Docker example') {
             agent {
                 docker {
-                    image 'node:22.16.0-alpine3.21'                
+                    image 'jenkins/jenkins:lts'                
                 }                                
             }
             steps {
+                // these steps will be run inside the jenkins/jenkins:lts container
                 sh 'node --eval "console.log(process.platform,process.env.CI)"'
             }
         } 
@@ -22,11 +23,12 @@ pipeline {
         stage('Test Cart Docker Image') {
             agent { 
                 dockerfile {
-                    filename Dockerfile.build_cart
+                    filename 'Dockerfile.build_cart'
                     dir 'pipeline/build_docker'
                 }                
             }
             steps {
+                // these steps will be run inside the docker container defined in the Dockerfile.build_cart
                 sh 'npm install'
             }
         }
