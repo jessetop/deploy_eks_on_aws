@@ -57,8 +57,11 @@ pipeline {
 
                             try {
                                 // check that the cluster exists first using aws eks describe-cluster
-                                // sh 'aws eks describe-cluster --name test-cluster-name --region us-east-1'
-                                // sh '${BIN_PATH}/eksctl delete cluster -f cluster_config.yaml'       
+                                sh 'aws eks describe-cluster --name test-cluster-name --region us-east-1'
+                                // -w flag waits for entire cluster to be deleted before returning a response
+                                sh '${BIN_PATH}/eksctl delete cluster -f cluster_config.yaml -w'       
+
+
                             }
                             catch(Exception e) {
                                 echo "Failed to delete EKS Cluster:" + e.getMessage()
