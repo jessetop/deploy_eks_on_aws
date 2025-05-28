@@ -1,3 +1,7 @@
+// add the next two lines to run the entire pipeline in a pod template
+podTemplate {
+    node('POD_LABEL') {
+            
 pipeline {
     agent any
 
@@ -30,18 +34,7 @@ pipeline {
                 // these steps will be run inside the docker container defined in the Dockerfile.build_cart
                 sh 'npm install'
             }
-        }
-        
-        podTemplate {
-            node('POD_LABEL') {
-                stage('Run commands inside pod running on EKS') {
-                    // Configure the kubernetes plugin to connect to your existing EKS cluster
-                    // https://plugins.jenkins.io/kubernetes/
-        
-                    sh 'echo hello world'
-                }
-            }
-        }        
+        }    
         stage('Install kubectl') {
             steps {            
                 // need to add a check to see if the file exists before installing, or check version against latest version                
@@ -142,4 +135,6 @@ pipeline {
           //  }
         //}
     }    
+}
+    }
 }
