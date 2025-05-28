@@ -46,16 +46,16 @@ pipeline {
                 sh '${BIN_PATH}/eksctl create cluster -f cluster_config.yaml --verbose 4'       
                 
             }
-        }
-        post {
+            post {
             // if EKS Cluster create fails, try and delete it so we don't leave it in an inconsistent state
-            failure {
-                sh 'echo --------------------------------------------'
-                sh 'echo ----- Deleting any orphaned resources ------'
-                sh 'echo --------------------------------------------'
-                sh '${BIN_PATH}/eksctl delete cluster -f cluster_config.yaml --verbose 4'       
+                failure {
+                    sh 'echo --------------------------------------------'
+                    sh 'echo ----- Deleting any orphaned resources ------'
+                    sh 'echo --------------------------------------------'
+                    sh '${BIN_PATH}/eksctl delete cluster -f cluster_config.yaml --verbose 4'       
+                }
             }
-        }
+        }        
         stage('Update kubeconfig') {
             steps {
                 echo 'Deploying....'
