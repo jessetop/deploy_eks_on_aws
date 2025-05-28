@@ -16,7 +16,7 @@ pipeline {
             }
             steps {
                 // these steps will be run inside the jenkins/jenkins:lts container
-                sh 'node --eval "console.log(process.platform,process.env.CI)"'
+                //sh 'node --eval "console.log(process.platform,process.env.CI)"'
             }
         } 
         
@@ -30,6 +30,17 @@ pipeline {
             steps {
                 // these steps will be run inside the docker container defined in the Dockerfile.build_cart
                 sh 'npm install'
+            }
+        }
+        stage{'Run commands inside pod running on EKS'} {
+            // Configure the kubernetes plugin to connect to your existing EKS cluster
+            // https://plugins.jenkins.io/kubernetes/
+            podTemplate {
+                node(POD_LABEL) {
+                    stage('Run shell') {
+                        sh 'echo hello world'
+                    }
+                }
             }
         }
         stage('Install kubectl') {
