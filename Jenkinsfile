@@ -31,35 +31,59 @@ pipeline {
                     sh '${BIN_PATH}/eksctl version'
                 }                
             }
-        }        
-        stage('Create EKS Cluster') {
-            steps {                
-                echo "Creating EKS Cluster"
-                sh '${BIN_PATH}/eksctl create cluster -f cluster_config.yaml'       
-                
+        }             
+        stage('Create EKS Cluster') {               
+            when {
+                expression {
+                    // check if the cluster exists, if it does, skip this stage
+                    try {
+                        sh 'aws eks describe-cluster --name test-cluster-name --region us-east-1'
+                        catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                            // if the cluster exists, this will not throw an error
+                            echo "EKS Cluster already exists, skipping creation"
+                            // return false to skip the stage
+                            return false
+                        }
+                        return false // cluster exists, skip creation
+                    } catch (Exception e) {
+                        return true // cluster does not exist, proceed with creation
+                    }
+                }
             }
+            steps {
+                echo "Creating EKS Cluster"
+                // sh '${BIN_PATH}/eksctl create cluster -f cluster_config.yaml'       
+            }        
             post {                
                 failure {
                     script {
                         try {
                         // if EKS Cluster create fails, try and delete it so we don't leave it in an inconsistent state
                         // this is hardcoded and needs to be paramterized later
-                        //sh 'aws cloudformation delete-stack --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'                                                                                                
-                        //sh 'aws cloudformation wait stack-delete-complete --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'
+                        
+                        // delete the add-on stacks first
+                        sh 'aws cloudformation delete-stack --region us-east-1 --stack-name eksctl-test-cluster-name-addon-iamserviceaccount-kube-system-cluster-autoscaler-jat'                                                                                                
+                        sh 'aws cloudformation delete-stack --region us-east-1 --stack-name eksctl-test-cluster-name-addon-iamserviceaccount-kube-system-aws-load-balancer-controller-jat' 
+                        
+                        sh 'aws cloudformation delete-stack --region us-east-1 --stack-name eksctl-test-cluster-name-addon-iamserviceaccount-kube-system-cluster-autoscaler-jat'                                                                                                
+                        sh 'aws cloudformation delete-stack --region us-east-1 --stack-name eksctl-test-cluster-name-addon-iamserviceaccount-kube-system-cluster-autoscaler-jat'                                                                                                
+                        
+                        
+                        sh 'aws cloudformation delete-stack --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'                                                                                                
+                        sh 'aws cloudformation wait stack-delete-complete --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'
                         }
                         catch (Exception e) {                            
                                 echo "Failed to delete Cloudformation Stack: " + e.getMessage()
                                 echo "Forcing deletion of Cloudformation Stack"
-                                //sh 'aws cloudformation delete-stack --deletion-mode FORCE_DELETE_STACK --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'                                
-                                //sh 'aws cloudformation wait stack-delete-complete --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'
+                                sh 'aws cloudformation delete-stack --deletion-mode FORCE_DELETE_STACK --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'                                
+                                sh 'aws cloudformation wait stack-delete-complete --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'
                         }                    
                         finally {
 
                             try {
-                                // check that the cluster exists first using aws eks describe-cluster
-                                //sh 'aws eks describe-cluster --name test-cluster-name --region us-east-1'
+                                
                                 // -w flag waits for entire cluster to be deleted before returning a response
-                                //sh '${BIN_PATH}/eksctl delete cluster -f cluster_config.yaml -w'       
+                                sh '${BIN_PATH}/eksctl delete cluster -f cluster_config.yaml -w'       
 
 
                             }
