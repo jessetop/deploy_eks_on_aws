@@ -22,7 +22,7 @@ pipeline {
             }
             steps {
                 // these steps will be run inside the jenkins/jenkins:lts container
-                //sh 'node --eval "console.log(process.platform,process.env.CI)"'
+                sh 'node --eval "console.log(process.platform,process.env.CI)"'
             }
         } 
         stage('Test Cart Docker Image') {
