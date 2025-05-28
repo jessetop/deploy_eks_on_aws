@@ -43,7 +43,7 @@ pipeline {
                 sh 'echo --------------------------------------------'
                 sh 'echo ----- Creating EKS Cluster -----------------'
                 sh 'echo --------------------------------------------'
-                sh '${BIN_PATH}/eksctl create cluster -f cluster_config.yaml --verbose 4'       
+                sh '${BIN_PATH}/eksctl create cluster -f cluster_config.yaml'       
                 
             }
             post {
@@ -52,7 +52,7 @@ pipeline {
                     sh 'echo --------------------------------------------'
                     sh 'echo ----- Deleting any orphaned resources ------'
                     sh 'echo --------------------------------------------'
-                    sh '${BIN_PATH}/eksctl delete cluster -f cluster_config.yaml --verbose 4'       
+                    sh '${BIN_PATH}/eksctl delete cluster -f cluster_config.yaml'       
                 }
             }
         }        
