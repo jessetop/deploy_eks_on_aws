@@ -52,7 +52,7 @@ pipeline {
             // if EKS Cluster create fails, try and delete it so we don't leave it in an inconsistent state
                 failure {
                     // this is hardcoded and needs to be paramterized later
-                    sh 'aws cloudformation delete-stack --stack-name eksctl-test-cluster-name-cluster'                    
+                    sh 'aws cloudformation delete-stack --deleteion-mode FORCE_DELETE_STACK --region-us-east-1 --stack-name eksctl-test-cluster-name-cluster'                    
                     sh '${BIN_PATH}/eksctl delete cluster -f cluster_config.yaml'       
                 }
             }
