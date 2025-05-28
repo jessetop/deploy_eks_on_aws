@@ -9,6 +9,7 @@ pipeline {
     stages {        
         stage('Install kubectl') {
             steps {            
+                // need to add a check to see if the file exists before installing, or check version against latest version
                 sh 'echo --------------------------------------------'
                 sh 'echo Installing eksctl'
                 sh 'echo --------------------------------------------'
@@ -25,6 +26,7 @@ pipeline {
         stage('Install eksctl') {
             steps {
                 script {
+                    // need to add a check to see if the file exists before installing, or check version against latest version
                     sh 'echo --------------------------------------------'
                     sh 'echo Installing eksctl'                       
                     sh 'echo --------------------------------------------'
@@ -50,7 +52,7 @@ pipeline {
             // if EKS Cluster create fails, try and delete it so we don't leave it in an inconsistent state
                 failure {
                     // this is hardcoded and needs to be paramterized later
-                    sh 'aws cloudformation delete stack --stack-name eksctl-test-cluster-name-cluster'                    
+                    sh 'aws cloudformation delete-stack --stack-name eksctl-test-cluster-name-cluster'                    
                     sh '${BIN_PATH}/eksctl delete cluster -f cluster_config.yaml'       
                 }
             }
