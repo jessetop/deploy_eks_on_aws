@@ -114,6 +114,9 @@ pipeline {
             }
         }
         stage('Deploy Application') {
+            steps {
+                echo 'Deploying application to EKS Cluster'
+            }
 
         }
         //stage('Cleaning Workspace') {
