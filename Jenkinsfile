@@ -49,9 +49,8 @@ pipeline {
             post {
             // if EKS Cluster create fails, try and delete it so we don't leave it in an inconsistent state
                 failure {
-                    sh 'echo --------------------------------------------'
-                    sh 'echo ----- Deleting any orphaned resources ------'
-                    sh 'echo --------------------------------------------'
+                    // this is hardcoded and needs to be paramterized later
+                    sh 'aws cloudformation delete stack --stack-name eksctl-test-cluster-name-cluster'                    
                     sh '${BIN_PATH}/eksctl delete cluster -f cluster_config.yaml'       
                 }
             }
