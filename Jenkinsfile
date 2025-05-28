@@ -25,6 +25,9 @@ pipeline {
                     filename Dockerfile.build_cart
                     dir 'pipeline/build_docker'
                 }
+                steps {
+                    sh 'npm install'
+                }
             }
         }
         stage('Install kubectl') {
