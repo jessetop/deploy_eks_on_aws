@@ -44,13 +44,13 @@ pipeline {
                         try {
                         // if EKS Cluster create fails, try and delete it so we don't leave it in an inconsistent state
                         // this is hardcoded and needs to be paramterized later
-                        sh 'aws cloudformation delete-stack --region-us-east-1 --stack-name eksctl-test-cluster-name-cluster'                                                                                                
+                        sh 'aws cloudformation delete-stack --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'                                                                                                
                         }
                         catch (Exception e) {
                             
                                 echo "Failed to delete Cloudformation Stack: " + e.getMessage()
                                 echo "Forcing deletion of Cloudformation Stack"
-                                sh 'aws cloudformation delete-stack --deletion-mode FORCE_DELETE_STACK --region-us-east-1 --stack-name eksctl-test-cluster-name-cluster'
+                                sh 'aws cloudformation delete-stack --deletion-mode FORCE_DELETE_STACK --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'
                         }                    
                         finally {
 
