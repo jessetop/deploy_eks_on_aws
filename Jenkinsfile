@@ -89,7 +89,9 @@ pipeline {
         }        
         stage('Update kubeconfig') {
             steps {
-                sh 'aws eks update-kubeconfig --region us-east-1 --name eksctl-test-cluster-name-cluster'
+                echo "Updating kubeconfig"
+                sh 'aws eks update-kubeconfig --region us-east-1 --name test-cluster-name'
+                sh '${BIN_PATH}/kubectl cluster-info'
             }
         }
         //stage('Cleaning Workspace') {
