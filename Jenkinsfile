@@ -60,7 +60,7 @@ pipeline {
                         try {
                         // if EKS Cluster create fails, try and delete it so we don't leave it in an inconsistent state
                         // this is hardcoded and needs to be paramterized later
-                                                
+
                         sh 'aws cloudformation delete-stack --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'                                                                                                
                         sh 'aws cloudformation wait stack-delete-complete --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'
                         }
@@ -89,7 +89,7 @@ pipeline {
         }        
         stage('Update kubeconfig') {
             steps {
-                echo 'Deploying....'
+                sh 'aws eks update-kubeconfig --region us-east-1 --name eksctl-test-cluster-name-cluster'
             }
         }
         //stage('Cleaning Workspace') {
