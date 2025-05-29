@@ -1,7 +1,9 @@
 // add the next two lines to configure the podtemplate
 podTemplate {
     node('built-in') {        
-        echo "hello world"        
+        stage {
+            echo "hello world"        
+        }        
     }
 }
             
