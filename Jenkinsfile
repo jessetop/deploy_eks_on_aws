@@ -1,9 +1,9 @@
 // add the next two lines to configure the podtemplate
 podTemplate {
     node('built-in') {
-        stage('Run shell on instance') {
-            
-        }
+        container('jnlp') {
+            echo "hello world"
+        }        
     }
 }
             
