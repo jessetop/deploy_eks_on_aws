@@ -19,12 +19,11 @@ pipeline {
         stage('Run in kubernetes pod') {
             agent {
                 kubernetes {
+                    cloud "EKS - Cluster - test-cluster-name"                    
                 }                
             }
             steps {
-                // these steps will be run inside the kubernetes pod
-                sh 'curl -sO http://ec2-3-17-128-9.us-east-2.compute.amazonaws.com:8080/jnlpJars/agent.jar'
-                sh 'java -jar agent.jar -url http://ec2-3-17-128-9.us-east-2.compute.amazonaws.com:8080/ -secret af07a462c788e2242f21ad36a33652b1107eb024fa9a9bf0dd8ddab4d77e4446 -name "Jenkins Docker Agent" -webSocket -workDir "/var/lib/jenkins"'
+                // these steps will be run inside the kubernetes pod                
                 echo "Hello world, run this on the pod"   
             }
         }
