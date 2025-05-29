@@ -18,8 +18,7 @@ pipeline {
     stages {        
         stage('Run in kubernetes pod') {
             agent {
-                kubernetes {
-                    cloud "EKS - Cluster - test-cluster-name"                    
+                kubernetes {                    
                 }                
             }
             steps {
