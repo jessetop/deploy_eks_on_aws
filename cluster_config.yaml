@@ -3,13 +3,13 @@ kind: ClusterConfig
 
 metadata:
   name: test-cluster-name
-  region: us-east-1
-  version: "1.32"
+  region: us-east-2
+  version: "1.33
 
 kubernetesNetworkConfig: 
   serviceIPv4CIDR: 10.100.0.0/16
 
-availabilityZones: ["us-east-1a", "us-east-1b"]
+availabilityZones: ["us-east-2a", "us-east-2b"]
     
 iam:
   withOIDC: true

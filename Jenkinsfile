@@ -41,7 +41,7 @@ pipeline {
                 expression {
                     // check if the cluster exists, if it does, skip this stage
                     try {
-                        sh 'aws eks describe-cluster --name test-cluster-name --region us-east-1'
+                        sh 'aws eks describe-cluster --name test-cluster-name --region us-east-2'
                         catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                             // if the cluster exists, this will not throw an error
                             echo "EKS Cluster already exists, skipping creation"
@@ -65,14 +65,14 @@ pipeline {
                         // if EKS Cluster create fails, try and delete it so we don't leave it in an inconsistent state
                         // this is hardcoded and needs to be paramterized later
                         // test comment 
-                        sh 'aws cloudformation delete-stack --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'                                                                                                
-                        sh 'aws cloudformation wait stack-delete-complete --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'
+                        sh 'aws cloudformation delete-stack --region us-east-2 --stack-name eksctl-test-cluster-name-cluster'                                                                                                
+                        sh 'aws cloudformation wait stack-delete-complete --region us-east-2 --stack-name eksctl-test-cluster-name-cluster'
                         }
                         catch (Exception e) {                            
                                 echo "Failed to delete Cloudformation Stack: " + e.getMessage()
                                 echo "Forcing deletion of Cloudformation Stack"
-                                sh 'aws cloudformation delete-stack --deletion-mode FORCE_DELETE_STACK --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'                                
-                                sh 'aws cloudformation wait stack-delete-complete --region us-east-1 --stack-name eksctl-test-cluster-name-cluster'
+                                sh 'aws cloudformation delete-stack --deletion-mode FORCE_DELETE_STACK --region us-east-2 --stack-name eksctl-test-cluster-name-cluster'                                
+                                sh 'aws cloudformation wait stack-delete-complete --region us-east-2 --stack-name eksctl-test-cluster-name-cluster'
                         }                    
                         finally {
 
@@ -93,7 +93,7 @@ pipeline {
         stage('Update kubeconfig') {
             steps {
                 echo "Updating kubeconfig"
-                sh 'aws eks update-kubeconfig --region us-east-1 --name test-cluster-name'
+                sh 'aws eks update-kubeconfig --region us-east-2 --name test-cluster-name'
                 sh '${BIN_PATH}/kubectl cluster-info'
             }
         }
